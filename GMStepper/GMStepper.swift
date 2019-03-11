@@ -111,7 +111,10 @@ import UIKit
 
     /// Label tap closure
     @objc public var didTouchLabel: ((Double) -> Void)?
-
+    
+    /// Block is called when the minimum is exceeded
+    @objc public var minimumExceeded: (() -> Void)?
+    
     /// Text color of the middle label. Defaults to white.
     @objc @IBInspectable public var labelTextColor: UIColor = UIColor.white {
         didSet {
@@ -439,6 +442,7 @@ extension GMStepper {
 
         if value == minimumValue {
             animateLimitHitIfNeeded()
+            minimumExceeded?()
         } else {
             stepperState = .ShouldDecrease
             animateSlideLeft()
@@ -529,12 +533,11 @@ private extension GMStepper {
     func handleIsLimitReached() {
         let isLimitReached = value == minimumValue
         leftButton.alpha = isLimitReached ? leftButtonLimitOpacity : 1
-        leftButton.isUserInteractionEnabled = !isLimitReached
     }
-
 }
 
 extension Decimal {
+    
     var significantFractionalDecimalDigits: Int {
         return max(-exponent, 0)
     }
