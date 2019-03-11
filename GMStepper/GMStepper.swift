@@ -112,7 +112,7 @@ import UIKit
     /// Label tap closure
     @objc public var didTouchLabel: ((Double) -> Void)?
     
-    /// Value reached the minimum
+    /// Block is called when the minimum is exceeded
     @objc public var minimumExceeded: (() -> Void)?
     
     /// Text color of the middle label. Defaults to white.
