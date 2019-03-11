@@ -113,7 +113,7 @@ import UIKit
     @objc public var didTouchLabel: ((Double) -> Void)?
     
     /// Value reached the minimum
-    @objc public var minimumReached: (() -> Void)?
+    @objc public var minimumExceeded: (() -> Void)?
     
     /// Text color of the middle label. Defaults to white.
     @objc @IBInspectable public var labelTextColor: UIColor = UIColor.white {
@@ -180,9 +180,6 @@ import UIKit
 
     /// Formatter for displaying the current value
     let formatter = NumberFormatter()
-    
-    /// Limit reached flag
-    private var isLimitReached: Bool = false
     
     /**
         Width of the sliding animation. When buttons clicked, the middle label does a slide animation towards to the clicked button. Defaults to 5.
@@ -445,9 +442,7 @@ extension GMStepper {
 
         if value == minimumValue {
             animateLimitHitIfNeeded()
-            if isLimitReached {
-                minimumReached?()
-            }
+            minimumExceeded?()
         } else {
             stepperState = .ShouldDecrease
             animateSlideLeft()
@@ -536,7 +531,7 @@ extension GMStepper {
 private extension GMStepper {
 
     func handleIsLimitReached() {
-        isLimitReached = value == minimumValue
+        let isLimitReached = value == minimumValue
         leftButton.alpha = isLimitReached ? leftButtonLimitOpacity : 1
     }
 }
