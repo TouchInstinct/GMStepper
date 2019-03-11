@@ -115,8 +115,6 @@ import UIKit
     /// Value reached the minimum
     @objc public var minimumReached: (() -> Void)?
     
-    private var isLimitReached: Bool = false
-    
     /// Text color of the middle label. Defaults to white.
     @objc @IBInspectable public var labelTextColor: UIColor = UIColor.white {
         didSet {
@@ -182,6 +180,9 @@ import UIKit
 
     /// Formatter for displaying the current value
     let formatter = NumberFormatter()
+    
+    /// Limit reached flag
+    private var isLimitReached: Bool = false
     
     /**
         Width of the sliding animation. When buttons clicked, the middle label does a slide animation towards to the clicked button. Defaults to 5.
@@ -541,6 +542,7 @@ private extension GMStepper {
 }
 
 extension Decimal {
+    
     var significantFractionalDecimalDigits: Int {
         return max(-exponent, 0)
     }
