@@ -114,7 +114,9 @@ import UIKit
     
     /// Value reached the minimum
     @objc public var minimumReached: (() -> Void)?
-
+    
+    private var isLimitReached: Bool = false
+    
     /// Text color of the middle label. Defaults to white.
     @objc @IBInspectable public var labelTextColor: UIColor = UIColor.white {
         didSet {
@@ -442,6 +444,9 @@ extension GMStepper {
 
         if value == minimumValue {
             animateLimitHitIfNeeded()
+            if isLimitReached {
+                minimumReached?()
+            }
         } else {
             stepperState = .ShouldDecrease
             animateSlideLeft()
@@ -530,12 +535,8 @@ extension GMStepper {
 private extension GMStepper {
 
     func handleIsLimitReached() {
-        let isLimitReached = value == minimumValue
-        if isLimitReached {
-            minimumReached?()
-        }
+        isLimitReached = value == minimumValue
         leftButton.alpha = isLimitReached ? leftButtonLimitOpacity : 1
-        leftButton.isUserInteractionEnabled = !isLimitReached
     }
 }
 
